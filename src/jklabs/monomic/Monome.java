@@ -216,7 +216,7 @@ public class Monome {
 	private byte pack(int[] values) {
 		byte b = 0;
 		for (int i = 0; i < values.length && i < 8; i++)
-			b += values[values.length - 1 - i] << i;
+			b += values[values.length - 1 - i] << values.length-1-i;
 		return b;
 	}
 
