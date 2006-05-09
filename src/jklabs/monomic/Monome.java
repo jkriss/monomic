@@ -40,6 +40,11 @@ public class Monome {
 	private Method buttonReleasedMethod;
 	private Method adcInputMethod;
 
+	boolean[][] ledValues = new boolean[y_dim][x_dim];
+	boolean[][] buttonValues = new boolean[y_dim][x_dim];
+	
+	boolean tempRow[] = new boolean[y_dim];
+
 	protected Monome(Object listener) {
 		this.listener = listener;
 		getMethods(listener);
@@ -50,6 +55,7 @@ public class Monome {
 		lightsOff();
 		setLedIntensity(10f);
 		for (int i=0; i<4; i++) disableADC(i);
+		setLowPower(false);
 	}
 
 	protected void getMethods(Object parent) {
@@ -93,12 +99,48 @@ public class Monome {
 		handleInputEvent(3, 4, 0);
 	}
 
+	////////////////////////////////////////////////// button state
+	
+	public boolean isPressed(int x, int y) {
+		return buttonValues[x][y];
+	}
+	
+	public boolean isLit(int x, int y) {
+		return ledValues[x][y];
+	}
+	
+	public byte[] getLedValues() {
+		return pack(ledValues);
+	}
+	
+	public byte[] getButtonValues() {
+		return pack(buttonValues);
+	}
+		
+	public byte getRowValues(int i) {
+		for (int y=0; y<y_dim; y++)
+			tempRow[y] = ledValues[y][i];
+		return pack(tempRow);	
+	}
+	
+	public byte getColValues(int i) {
+		return pack(ledValues[i]);	
+	}
+	
+	
 	////////////////////////////////////////////////// monome functions
+	
+	public void pressButton(int x, int y) {
+		handleInputEvent(x, y, 1);
+	}
+
+	public void releaseButton(int x, int y) {
+		handleInputEvent(x, y, 0);
+	}
 
 	public void testPattern(boolean b) {
 		if (debug == FINE)
-			System.out
-					.println("setting led test pattern " + (b ? "on" : "off"));
+			System.out.println("setting led test pattern " + (b ? "on" : "off"));
 	}
 
 	public void lightsOn() {
@@ -117,29 +159,52 @@ public class Monome {
 		setValue(x, y, 0);
 	}
 
+	public void setValue(int x, int y, boolean value) {
+		setValue(x, y, value?1:0);
+	}
+	
 	public void setValue(int x, int y, int value) {
 		if (debug == FINE)
 			System.out.println("setting light " + x + "," + y + " to " + value);
+		setInternalLedValue(x, y, value);
+	}
+
+	public void invertRow(int i) {
+	    setRow(i, (byte)(0xff-getRowValues(i))); 
 	}
 
 	public void setRow(int i, int[] vals) {
 		setRow(i, pack(vals));
 	}
 
-	public void setRow(int i, byte bitVals) {
-		if (debug == FINE)
-			System.out.println("setting row " + i + " to "
-					+ byteString(bitVals));
+	public void setRow(int i, boolean[] vals) {
+		setRow(i, pack(vals));
 	}
 
+	public void setRow(int i, byte bitVals) {
+		if (debug == FINE) System.out.println("setting row " + i + " to " + bitString(bitVals));
+		
+		for (int j=0; j<8; j++)
+			setInternalLedValue(j, i, (bitVals >> j )&0x01);
+	}
+
+	public void invertCol(int i) {
+	    setCol(i, (byte)(0xff-getColValues(i))); 
+	}
+	
 	public void setCol(int i, int[] vals) {
 		setCol(i, pack(vals));
 	}
 
+	public void setCol(int i, boolean[] vals) {
+		setCol(i, pack(vals));
+	}
+
 	public void setCol(int i, byte bitVals) {
-		if (debug == FINE)
-			System.out.println("setting col " + i + " to "
-					+ byteString(bitVals));
+		if (debug == FINE) System.out.println("setting col " + i + " to " + bitString(bitVals));
+
+		for (int j=0; j<8; j++)
+			setInternalLedValue(i, j, (bitVals >> j )&0x01);
 	}
 
 	public void setLowPower(boolean b) {
@@ -152,7 +217,17 @@ public class Monome {
 			System.out.println("setting led intensity to " + f);
 	}
 
+	public void invert() {
+		for (int x=0; x<x_dim; x++)
+			invertCol(x);
+	}
+	
 	public void setValues(int[][] vals) {
+		for (int i = 0; i < vals.length; i++)
+			setRow(i, vals[i]);
+	}
+
+	public void setValues(boolean[][] vals) {
 		for (int i = 0; i < vals.length; i++)
 			setRow(i, vals[i]);
 	}
@@ -176,7 +251,7 @@ public class Monome {
 		
 	}
 
-	protected void handleAdcInput(int port, float value) {
+	protected synchronized void handleAdcInput(int port, float value) {
 		if (debug == FINE) System.out.println("adc input: port " + port + ": " + value);
 		if (adcInputMethod == null) return;
 		
@@ -194,40 +269,75 @@ public class Monome {
 		}
 	}
 	
-	protected void handleInputEvent(int x, int y, int value) {
+	protected synchronized void handleInputEvent(int x, int y, int value) {
+		if (x<0 || y<0) return;
+		setInternalButtonValue(x, y, value);
 		Method m = (value == 1) ? buttonPressedMethod : buttonReleasedMethod;
-		if (m == null)
+		if (m == null) // || x>x_dim-1 || y>y_dim-1 || x<0 || y<0)
 			return;
 		buttonLoc[0] = INTS[x];
 		buttonLoc[1] = INTS[y];
-			try {
-				m.invoke(listener, buttonLoc);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}		
+		try {
+			m.invoke(listener, buttonLoc);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	////////////////////////////////////////////////// helper methods
 
+	private void setInternalLedValue(int x, int y, int value) {
+//		System.out.println("setting internal state of " + x + "," + y + " to " + value);
+		ledValues[x][y] = (value == 1);
+	}
+
+	private void setInternalButtonValue(int x, int y, int value) {
+		buttonValues[x][y] = (value == 1);
+	}
+	
 	private byte pack(int[] values) {
 		byte b = 0;
 		for (int i = 0; i < values.length && i < 8; i++)
 			b += values[values.length - 1 - i] << values.length-1-i;
 		return b;
 	}
+	
+	private byte pack(boolean[] values) {
+		byte b = 0;
+		for (int i = 0; i < values.length && i < 8; i++)
+			b += (values[values.length - 1 - i]?1:0) << values.length-1-i;
+		return b;
+	}
+	
+	private byte[] pack(boolean[][] values) {
+		byte[] temp = new byte[y_dim];
+		for (int i=0; i<values.length; i++)
+			temp[i] = pack(values[i]);
+		return temp;
+	}
 
 	private StringBuffer s = new StringBuffer();
 
-	protected String byteString(byte b) {
+	public String bitString(byte b) {
 		s.setLength(0);
 		for (int i = 0; i < 8; i++) {
 			s.insert(0, (char) b & 0x1);
 			b >>= 1;
 		}
 		return s.toString();
+	}
+	
+	public String getMatrixString() {
+		String s = "";
+		for (int y=0; y<y_dim; y++) {
+			for (int x=0; x<x_dim; x++)
+				s += (ledValues[x][y] ? 1 : 0) + " ";
+			s +="\n";
+		}
+		return s;
 	}
 }

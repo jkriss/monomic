@@ -130,7 +130,7 @@ public class MonomeSerial extends Monome {
 
 	public void setLowPower(boolean b) {
 		super.setLowPower(b);
-		sendSerial(SHUTDOWN, (byte) (b ? 1 : 0));
+		sendSerial(SHUTDOWN, (byte) (b ? 0 : 1));
 	}
 
 	public void setLedIntensity(float f) {
@@ -162,8 +162,8 @@ public class MonomeSerial extends Monome {
 
 	private void sendSerial(byte b1, byte b2) {
 		if (debug == FINE)
-			System.out.println("$$ sending data: " + byteString(b1) + " | "
-					+ byteString(b2));
+			System.out.println("$$ sending data: " + bitString(b1) + " | "
+					+ bitString(b2));
 		data[0] = b1;
 		data[1] = b2;
 		if (serialPort != null) {
@@ -174,8 +174,8 @@ public class MonomeSerial extends Monome {
 	public void handleSerialInput(byte data0, byte data1) {
 
 		if (debug == FINE)
-			System.out.println("$$ received data: " + byteString(data0) + " | "
-					+ byteString(data1));
+			System.out.println("$$ received data: " + bitString(data0) + " | "
+					+ bitString(data1));
 		int address = top4(data0);
 
 		switch (address) {
