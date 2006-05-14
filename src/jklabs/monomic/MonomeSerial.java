@@ -7,7 +7,7 @@ import processing.serial.Serial;
 
 public class MonomeSerial extends Monome {
 
-	protected static final long SLEEP_TIME = 5;
+	protected static final long SLEEP_TIME = 10;
 
 	// serial constants
 	private static final byte BUTTON_ON = 0x01;

@@ -15,6 +15,9 @@ public class Monome {
 	public static int FINE = 1;
 	public static int WARNING = 2;
 	protected int debug = NONE;
+	
+	private byte[] buttonVals = new byte[y_dim];
+	private byte[] ledVals = new byte[y_dim];
 
 	// create ALL_ON and ALL_OFF matrices, INT array
 	static {
@@ -110,11 +113,11 @@ public class Monome {
 	}
 	
 	public byte[] getLedValues() {
-		return pack(ledValues);
+		return pack(ledValues, ledVals);
 	}
 	
 	public byte[] getButtonValues() {
-		return pack(buttonValues);
+		return pack(buttonValues, buttonVals);
 	}
 		
 	public byte getRowValues(int i) {
@@ -313,11 +316,14 @@ public class Monome {
 		return b;
 	}
 	
-	private byte[] pack(boolean[][] values) {
-		byte[] temp = new byte[y_dim];
+//	private byte[] pack(boolean[][] values) {
+//		return pack(values, new byte[8]);
+//	}
+	
+	private byte[] pack(boolean[][] values, byte[] dest) {
 		for (int i=0; i<values.length; i++)
-			temp[i] = pack(values[i]);
-		return temp;
+			dest[i] = pack(values[i]);
+		return dest;
 	}
 
 	private StringBuffer s = new StringBuffer();
