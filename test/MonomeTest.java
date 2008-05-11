@@ -10,7 +10,7 @@ public void setup() {
   //m = new MonomeOSC(this);
   m = new MonomeSerial(this);
   
-  m.setDebug(m.FINE);
+  m.setDebug(MonomeSerial.FINE);
   
   //m.lightsOn();
   //m.lightsOff();
@@ -18,7 +18,6 @@ public void setup() {
   m.lightOff(0,1);
   
   int[] vals = new int[]{0,0,1,1,0,0,1,1};
-  //int[] vals = new int[]{1,1,1,1,1,1,1,1};
   int[][] matrix = new int[][]{
                     {0,1,0,1,0,1,0,1},
                     {1,0,1,0,1,0,1,0},

@@ -120,7 +120,7 @@ public class MonomeOSC extends Monome {
 	////////////////////////////////////////////////// helper methods
 
 	private OscMessage makeMessage(String command) {
-		return oscP5.newMsg(command);
+		return new OscMessage(command);
 	}
 
 	private void setRowOrColumn(String command, int i, int bitVals) {
@@ -133,8 +133,8 @@ public class MonomeOSC extends Monome {
 	////////////////////////////////////////////////// osc communication
 
 	private void send(OscMessage m) {
-		if (debug == FINE) System.out.println("$$ sending " + m.getMsgName() + " " + m.getArgs());
-		oscP5.sendMsg(m);
+		if (debug == FINE) System.out.println("$$ sending " + m.address() + " " + m.arguments());
+		oscP5.send(m);
 	}
 
 	private void initOsc(String host, int sendPort, int receivePort) {
@@ -150,7 +150,7 @@ public class MonomeOSC extends Monome {
 
 	void unpackMessage(OscIn oscIn) {
 		if (boxName == null) {
-			String a = oscIn.getAddrPattern();
+			String a = oscIn.addrPattern();
 			if (a.indexOf("m40h") != -1) {
 				String newBox = a.substring(1, a.indexOf('/', 1));
 				System.out.println("discovered new monome 40h: " + newBox);
@@ -173,8 +173,8 @@ public class MonomeOSC extends Monome {
 		} else {
 			if (debug == FINE) {
 				System.out.println("you have received an osc message "
-						+ oscIn.getAddrPattern() + "   " + oscIn.getTypetag());
-				Object[] o = oscIn.getData();
+						+ oscIn.addrPattern() + "   " + oscIn.typetag());
+				Object[] o = oscIn.arguments();
 				for (int i = 0; i < o.length; i++) {
 					System.out.println(i + "  " + o[i]);
 				}
@@ -185,7 +185,7 @@ public class MonomeOSC extends Monome {
 	////////////////////////////////////////////////// cleanup
 
 	protected void finalize() throws Throwable {
-		oscP5.disconnectFromTEMP();
+		oscP5.stop();
 		oscP5 = null;
 		super.finalize();
 	}
