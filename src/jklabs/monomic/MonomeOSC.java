@@ -1,8 +1,7 @@
 package jklabs.monomic;
 
-import oscP5.OscIn;
-import oscP5.OscMessage;
-import oscP5.OscP5;
+import oscP5.*;
+import netP5.*;
 
 public class MonomeOSC extends Monome {
 
@@ -20,9 +19,10 @@ public class MonomeOSC extends Monome {
 	private static final String TEST = "test";
 	private static final String ADC = "adc_val";
 	private static final String ADC_ENABLE = "adc_enable";
+	private static final String INTENSITY = "intensity";
 
 	// osc addresses for this instance
-	private String led, row, col, shutdown, button, test, adc, adc_enable;
+	private String led, row, col, shutdown, button, test, adc, adc_enable, intensity;
 
 	public MonomeOSC(Object parent) {
 		this(parent, "box");
@@ -63,6 +63,7 @@ public class MonomeOSC extends Monome {
 		test = prependName(TEST);
 		adc = prependName(ADC);
 		adc_enable = prependName(ADC_ENABLE);
+		intensity = prependName(INTENSITY);
 	}
 
 	private String prependName(String command) {
@@ -105,7 +106,7 @@ public class MonomeOSC extends Monome {
 	}
 
 	public void setLedIntensity(float f) {
-		OscMessage oscMsg = makeMessage(led);
+		OscMessage oscMsg = makeMessage(intensity);
 		oscMsg.add(f);
 		send(oscMsg);
 	}
@@ -133,7 +134,7 @@ public class MonomeOSC extends Monome {
 	////////////////////////////////////////////////// osc communication
 
 	private void send(OscMessage m) {
-		if (debug == FINE) System.out.println("$$ sending " + m.address() + " " + m.arguments());
+		if (debug == FINE) System.out.println("$$ sending " + m.addrPattern() + " " + m.arguments());
 		oscP5.send(m);
 	}
 
@@ -150,7 +151,7 @@ public class MonomeOSC extends Monome {
 
 	void unpackMessage(OscIn oscIn) {
 		if (boxName == null) {
-			String a = oscIn.addrPattern();
+			String a = oscIn.getAddrPattern();
 			if (a.indexOf("m40h") != -1) {
 				String newBox = a.substring(1, a.indexOf('/', 1));
 				System.out.println("discovered new monome 40h: " + newBox);
@@ -173,8 +174,8 @@ public class MonomeOSC extends Monome {
 		} else {
 			if (debug == FINE) {
 				System.out.println("you have received an osc message "
-						+ oscIn.addrPattern() + "   " + oscIn.typetag());
-				Object[] o = oscIn.arguments();
+						+ oscIn.getAddrPattern() + "   " + oscIn.getTypetag());
+				Object[] o = oscIn.getData();
 				for (int i = 0; i < o.length; i++) {
 					System.out.println(i + "  " + o[i]);
 				}
@@ -185,7 +186,7 @@ public class MonomeOSC extends Monome {
 	////////////////////////////////////////////////// cleanup
 
 	protected void finalize() throws Throwable {
-		oscP5.stop();
+		oscP5.disconnectFromTEMP();
 		oscP5 = null;
 		super.finalize();
 	}
