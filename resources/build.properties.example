@@ -1,5 +1,5 @@
 	
-# (1) where are your processing libraries located? edit location.
+# (1) where are your processing libraries located?
 
 processing=/Users/someuser/Documents/Processing/libraries
 
@@ -22,7 +22,7 @@ javaVersion=1.5
 author=yourNameHere
 
 	
-# (6) which copyright?  edit value
+# (6) which copyright?
 copyright=(c) 2008
 	
 	
