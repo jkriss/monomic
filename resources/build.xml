@@ -7,33 +7,12 @@
     </description>
 	
 	<path id="library-classpath">
-		<fileset dir="${libraryClasspath}" >		
-<!-- #### (3) add the jar files that are required for compiling. edit name.
-		for more include files. duplicate <include name="" /> #### -->
-			<include name="core.jar"/>
-		</fileset>
+		<fileset dir="${libraryClasspath}" includes="*.jar"/>		
 	</path>		
-	
-
-
-
-
-
-
-
-
-	
 	
 	
 	
 	<!-- no changes or adjustments required below -->
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -97,7 +76,7 @@
 	<!-- create the java reference of the library -->
  	<mkdir dir="${reference}" />
  	<javadoc bottom="processing library ${libraryName} by ${author}. ${copyright}" 
- 			 classpath="${libraryClasspath}/core.jar" 
+ 			 classpathref="library-classpath"  
  			 destdir="${reference}" 
  			 verbose="false" 
  			 stylesheetfile="resources/stylesheet.css" 
