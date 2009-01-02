@@ -146,7 +146,7 @@
   	<copy todir="${dist}/web">
   		<fileset dir="web" />
   	</copy>
-  	
+  	  	
   	<!--
   	format the index.html file. 
   	regular expressions are used to parse the web index.html file. 

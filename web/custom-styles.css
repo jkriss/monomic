@@ -1,0 +1,11 @@
+#header {
+  background: #333 !important;
+  width: 100%;
+  margin-left: -64px;
+  padding-left: 64px;
+  padding-bottom: 24px !important;
+}
+
+#header h1 {
+  color: #fff !important;
+}
