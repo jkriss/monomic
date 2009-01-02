@@ -6,8 +6,6 @@
         processingLibs. ant build file.
     </description>
 	
-	<property name="libraryClasspath"  location="${libraryClasspathLocation}"/>
-		
 	<path id="library-classpath">
 		<fileset dir="${libraryClasspath}" >		
 <!-- #### (3) add the jar files that are required for compiling. edit name.

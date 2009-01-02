@@ -1,13 +1,13 @@
 	
 # (1) where are your processing libraries located? edit location.
 
-processing=../../Processing/libraries
+processing=/Users/someuser/Documents/Processing/libraries
 
 
 # (2) where are the jar files located that are required for compiling 
 # your library such as e.g. core.jar
 
-libraryClasspathLocation=../libs
+libraryClasspath=lib
 	
 
 # (4) set the java version that should be used to compile your library.	
