@@ -98,7 +98,7 @@
 	<!-- create the java reference of the library -->
  	<mkdir dir="${reference}" />
  	<javadoc bottom="processing library ${libraryName} by ${author}. ${copyright}" 
- 			 classpath="${libraryClasspath}/core.jar" 
+ 			 classpath="${libraryClasspath}/core.jar;${libraryClasspath}/oscP5.jar;${libraryClasspath}/serial.jar" 
  			 destdir="${reference}" 
  			 verbose="false" 
  			 stylesheetfile="resources/stylesheet.css" 
