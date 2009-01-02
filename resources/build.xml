@@ -188,27 +188,27 @@
   	  						
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##tested:platform##"
-  	  						replace="${tested:platform}"
+  	  						replace="${tested_platform}"
   	  						flags="g" />
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##tested:processingVersion##"
-  	  						replace="${tested:processingVersion}"
+  	  						replace="${tested_processingVersion}"
   	  						flags="g" />
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##tested:dependencies##"
-  	  						replace="${tested:dependencies}"
+  	  						replace="${tested_dependencies}"
   	  						flags="g" />
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##source:host##"
-  	  						replace="${source:host}"
+  	  						replace="${source_host}"
   	  						flags="g" />
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##source:url##"
-  	  						replace="${source:url}"
+  	  						replace="${source_url}"
   	  						flags="g" />
   	 <replaceregexp file="${dist}/web/index.html"
   							match="##source:repository##"
-  	  						replace="${source:repository}"
+  	  						replace="${source_repository}"
   	  						flags="g" />
 
   	
