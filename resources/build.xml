@@ -6,12 +6,11 @@
         processingLibs. ant build file.
     </description>
 	
-	<property name="libraryClasspath"  location="${libraryClasspathLocation}"/>
-		
 	<path id="library-classpath">
 		<fileset dir="${libraryClasspath}" >		
 <!-- #### (3) add the jar files that are required for compiling. edit name.
 		for more include files. duplicate <include name="" /> #### -->
+			<include name="oscP5.jar"/>
 			<include name="core.jar"/>
 		</fileset>
 	</path>		
