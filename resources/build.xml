@@ -10,26 +10,9 @@
 		<fileset dir="${libraryClasspath}" includes="*.jar"/>		
 	</path>		
 	
-
-
-
-
-
-
-
-
-	
-	
 	
 	
 	<!-- no changes or adjustments required below -->
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
