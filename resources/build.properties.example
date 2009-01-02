@@ -1,13 +1,13 @@
 	
 # (1) where are your processing libraries located? edit location.
 
-processing="../../Processing/libraries"
+processing=../../Processing/libraries
 
 
 # (2) where are the jar files located that are required for compiling 
 # your library such as e.g. core.jar
 
-libraryClasspathLocation="../libs"	
+libraryClasspathLocation=../libs
 	
 
 # (4) set the java version that should be used to compile your library.	
@@ -19,11 +19,11 @@ javaVersion=1.5
 # implemented into the document automatically.	
 				
 # (5) who is the author of this library?  edit value.
-author="yourNameHere"
+author=yourNameHere
 
 	
 # (6) which copyright?  edit value
-copyright="(c) 2008"
+copyright=(c) 2008
 	
 	
 # (7) what is the name of your library?
@@ -45,19 +45,19 @@ keywords=?
 
 	
 # (11) a comma separated list of platforms the library has been tested.
-"tested:platform"="?"
+tested_platform=?
 
 
 # (12) the processing version this library has been tested with.
-"tested:processingVersion"="?"
+tested_processingVersion=?
 
 
 # (13) does the library depend on any other library, dll, jnilib, etc.
-"tested:dependencies"="?"
+tested_dependencies=?
 
 	
 # (14) where can the source code be found?
-"source:host"="google code"
-"source:url"="http://code.google.com/p/yourProject"
-"source:repository"="http://code.google.com/p/yourProject/source/browse/"
+source_host=google code
+source_url=http://code.google.com/p/yourProject
+source_repository=http://code.google.com/p/yourProject/source/browse/
 	
