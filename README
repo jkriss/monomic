@@ -1,3 +1,0 @@
-To add the library template to an existing git project, just go to your library's working directory and run
-
-git pull git://github.com/jkriss/processing-library-template.git master
