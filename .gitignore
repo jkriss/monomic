@@ -1,4 +1,6 @@
-.svn
+.DS_Store
+**/.DS_Store
+**/.svn
 .classpath
 .project
 reference

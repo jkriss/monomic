@@ -110,7 +110,7 @@
   	<!-- zip the distribution of the library -->
   	<zip destfile="${dist}/${libraryName}.zip"
   	       basedir="${dist}"
-  	       excludes="**/_DS.Store"
+  	       excludes="**/.DS_Store,web/**"
 	/>
   	
   	<!-- <rename src="${dist}/${libraryName}.zip" dest="${dist}/${libraryName}_${versionNumber}.zip" /> -->
