@@ -163,11 +163,16 @@
   	  						replace="${date}"
   	  						flags="g" />
   	  						
-  	 <replaceregexp file="${dist}/web/index.html"
-  							match="##keywords##"
-  	  						replace="${keywords}"
-  	  						flags="g" />
-  	  						
+ 	 <replaceregexp file="${dist}/web/index.html"
+ 							match="##keywords##"
+ 	  						replace="${keywords}"
+ 	  						flags="g" />
+ 	  						
+ 	 <replaceregexp file="${dist}/web/index.html"
+ 							match="##license##"
+ 	  						replace="${license}"
+ 	  						flags="g" />
+ 	  						
   	  						
   	  						
   	 <replaceregexp file="${dist}/web/index.html"
