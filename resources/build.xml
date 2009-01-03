@@ -57,7 +57,15 @@
 	<!-- build the distribution of the library -->
   <target name="build" depends="compile" description="generate the distribution" >
   	<!-- delete the previous content of the ${dist} folder -->
-  	<delete dir="${dist}" />
+  	<!-- leave web folder (not contents) and all git info for submodule tracking -->
+  	<delete>
+  		<fileset dir="${dist}">
+   			<exclude name="web"/>
+  			<exclude name="**/.git"/>
+  			<exclude name="**/.git/**"/>
+  		</fileset>
+  	</delete>
+
   	
   	<!-- build the structure for ${dist} -->
   	<mkdir dir="${dist}" />
