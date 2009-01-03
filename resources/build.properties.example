@@ -43,6 +43,8 @@ yourLink=http://www.processing.org
 # (10) a comma separated list of keywords describing your library.
 keywords=?
 
+# (10.5) open source license that your library is released under
+license=?
 	
 # (11) a comma separated list of platforms the library has been tested.
 tested_platform=?
