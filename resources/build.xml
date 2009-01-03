@@ -79,6 +79,9 @@
   	<copy todir="${dist}/src">
   		<fileset dir="src"/>
   	</copy> 
+  	<copy todir="${dist}/library">
+  		<fileset file="resources/export.txt"/>
+  	</copy> 
   	
 	<!-- create the java reference of the library -->
  	<mkdir dir="${reference}" />
